@@ -26,33 +26,33 @@ function Song() {
             })
     }
 
-    let navigateToUpdatePage=(sng)=>{
+    let navigateToUpdatePage = (sng) => {
         console.log("Edit song")
         console.log(sng)
         console.log("Navigate to update page")
-        navigate("/update", { 
-                            state:{
-                                    editsong:sng
-                                }
-                            })
-        
+        navigate("/update", {
+            state: {
+                editsong: sng
+            }
+        })
+
     }
 
     let renderAllSongs = () => {
         return allsongs.map(s => {
             return (
                 <li key={s._id}>
-                    {s.videoid}, 
-                    <b style={{color:"red"}}>Views:</b> {s.views},
-                    <b style={{color:"red"}}>Likes:</b> { s.likes}
+                    {s.videoid},
+                    <b style={{ color: "red" }}>Views:</b> {s.views},
+                    <b style={{ color: "red" }}>Likes:</b> {s.likes}
                     <div>
                         <iframe width="320" height="240" src={"https://www.youtube.com/embed/" + s.videoid} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                     <br />
-                    <button onClick={()=>{deleteById(s._id)}}>Delete</button>
+                    <button onClick={() => { deleteById(s._id) }}>Delete</button>
                     &nbsp;
-                    <button onClick={()=>{navigateToUpdatePage(s)}}>
-                       Update
+                    <button onClick={() => { navigateToUpdatePage(s) }}>
+                        Update
                     </button>
                     <hr />
                 </li>
@@ -60,27 +60,42 @@ function Song() {
         })
     }
 
-    let deleteById=(id)=>{
+    let deleteById = (id) => {
         console.log("Delete song by id: " + id)
         axios.delete("https://joyous-erin-chameleon.cyclic.app/delete/song/" + id)
-            .then(response=>{
+            .then(response => {
                 console.log(response.data)
                 callSongAPI()
             })
-            .catch(error=>{
+            .catch(error => {
                 console.log(error)
             })
     }
 
-    return (
 
-        <div>
-            <h1>List of songs from express API:</h1>
-            <ol>
-                {renderAllSongs()}
-            </ol>
-        </div>
-    );
+    if (allsongs.length === 0) {
+        return (
+            <div>
+                <h1>Allsongs count: {allsongs.length}</h1>
+                <h1 style={{ color: "lightgreen" }}>
+                    Loading....
+                </h1>
+            </div>
+        )
+    } else {
+        return (
+            <div>
+                <h1>Allsongs count: {allsongs.length}</h1>
+                <h1>List of songs from express API:</h1>
+                <ol>
+                    {renderAllSongs()}
+                </ol>
+            </div>
+        )
+    }
+
+
+
 }
 
 export default Song;
