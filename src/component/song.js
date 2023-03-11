@@ -26,9 +26,15 @@ function Song() {
             })
     }
 
-    let navigateToUpdatePage=()=>{
+    let navigateToUpdatePage=(sng)=>{
+        console.log("Edit song")
+        console.log(sng)
         console.log("Navigate to update page")
-        navigate("/update")
+        navigate("/update", { 
+                            state:{
+                                    editsong:sng
+                                }
+                            })
         
     }
 
@@ -37,15 +43,15 @@ function Song() {
             return (
                 <li key={s._id}>
                     {s.videoid}, 
-                    <b>Views:</b> {s.views},
-                    <b>Likes:</b> { s.likes}
+                    <b style={{color:"red"}}>Views:</b> {s.views},
+                    <b style={{color:"red"}}>Likes:</b> { s.likes}
                     <div>
                         <iframe width="320" height="240" src={"https://www.youtube.com/embed/" + s.videoid} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
                     <br />
                     <button onClick={()=>{deleteById(s._id)}}>Delete</button>
                     &nbsp;
-                    <button onClick={navigateToUpdatePage}>
+                    <button onClick={()=>{navigateToUpdatePage(s)}}>
                        Update
                     </button>
                     <hr />
